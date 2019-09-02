@@ -15,7 +15,7 @@ export function createRouter() {
       {
         path: '/chat',
         name: 'chatting_room',
-        // component: require('~/pages/chat').default
+        component: require('~/pages/chat').default
       }
     ]
   })

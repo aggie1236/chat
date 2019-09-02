@@ -9,7 +9,7 @@ const io = require('socket.io')(server)
 
 // Import and Set Nuxt.js options
 const config = require('../nuxt.config.js')
-// const socket = require('./socket')
+const socket = require('./socket')
 
 config.dev = process.env.NODE_ENV !== 'production'
 
@@ -38,21 +38,21 @@ async function start () {
     message: `Server listening on http://${host}:${port}`,
     badge: true
   })
-  // socket.init(server)
+  socket.init(server)
 
-  io.on('connection', async function(socket) {
-    const socketId = socket.id
+  // io.on('connection', async function(socket) {
+  //   const socketId = socket.id
 
-    console.log('socket connection')
+  //   console.log('socket connection')
 
-    socket.on('msg',function(msg){
-      console.log('msg',msg)
-    })
+  //   socket.on('msg',function(msg){
+  //     console.log('msg',msg)
+  //   })
 
-    socket.on('TEST',data=>{
-      console.log('TEST',data)
-    })
-  })
+  //   socket.on('TEST',data=>{
+  //     console.log('TEST',data)
+  //   })
+  // })
 
 }
 start()
