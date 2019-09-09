@@ -1,11 +1,42 @@
 <template>
   <div>
     <nav class="sidebar">
+      <i class="far fa-plus-square" title="add"></i>
       <i class="far fa-folder-open"></i>
       <i class="fas fa-search"></i>
       <i class="fas fa-draw-polygon"></i>
       <i class="fas fa-bezier-curve"></i>
     </nav>
+    <div class="sidebar_content">
+      <div class="sidebar_sec people_now">
+        <div class="title">
+          <i class="fas fa-chevron-down"></i>online
+        </div>
+        <div class="sidebar_sec_content">
+          <ul>
+            <li>aaa</li>
+            <li>aaa</li>
+            <li>aaa</li>
+            <li>aaa</li>
+            <li>aaa</li>
+          </ul>
+        </div>
+      </div>
+      <div class="sidebar_sec channel">
+        <div class="title">
+          <i class="fas fa-chevron-down"></i>channel
+        </div>
+        <div class="sidebar_sec_content">
+          <ul>
+            <li>aaa</li>
+            <li>aaa</li>
+            <li>aaa</li>
+            <li>aaa</li>
+            <li>aaa</li>
+          </ul>
+        </div>
+      </div>
+    </div>
     <div class="main" id="main">
       <nuxt />
     </div>
@@ -69,9 +100,24 @@
       }
     }
   }
-
+  .sidebar_content {
+    position: fixed;
+    left: 40px;
+    top: 0;
+    background-color: $grayBgLight;
+    height: 100%;
+    width: 160px;
+    z-index: 9;
+    .title {
+      background-color: $grayUi;
+      padding: 2px 5px;
+    }
+    i {
+      margin-right: 5px;
+    }
+  }
   .main {
-    padding-left: 40px;
+    padding-left: 200px;
     height: calc(100vh - 70px);
     overflow-y: auto;
   }

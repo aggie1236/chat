@@ -16,7 +16,6 @@
         <div class="msg_input">
           user:project $
           <input type="text" v-model="msg" @keydown="keyHandler" />
-          <button id="btnSend">send</button>
         </div>
       </div>
     </div>
@@ -58,7 +57,7 @@
       },
       keyHandler(e) {
         if (e.keyCode === 13) {
-          this.allMsg.push({
+          this.$socket.emit("msg", {
             name: "ohiYo",
             text: this.msg,
             codeClass: "codeClassHtml",
@@ -66,13 +65,17 @@
           });
           this.msg = "";
         }
-        // this.$socket.emit("TEST", "棒棒");
+      },
+      uploadMsg(msg) {
+        this.allMsg.push(msg);
       }
     },
     mounted() {
+      this.$socket.on("uploadMsg", this.uploadMsg);
       // document.addEventListener("keyup", this.keyHandler);
     },
     beforeDestroy() {
+      this.$socket.off("uploadMsg");
       // document.removeEventListener("keyup", this.keyHandler);
     }
   };

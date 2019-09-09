@@ -6,15 +6,17 @@ module.exports = {
     const messages = []
     io.on('connection', async function(socket) {
       const socketId = socket.id
-  
+
       console.log('socket connection')
-  
-      socket.on('msg',function(msg){
-        console.log('msg',msg)
+
+      socket.on('msg', function(msg) {
+        console.log('msg', msg)
+        messages.push(msg)
+        io.emit('uploadMsg', msg)
       })
-  
-      socket.on('TEST',data=>{
-        console.log('TEST',data)
+
+      socket.on('TEST', data => {
+        console.log('TEST', data)
       })
     })
   }
