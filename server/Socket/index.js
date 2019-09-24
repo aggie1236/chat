@@ -4,6 +4,7 @@ module.exports = {
   init(server) {
     io = SocketIO(server)
     const messages = []
+    const members = {}
     io.on('connection', async function(socket) {
       const socketId = socket.id
 
@@ -15,8 +16,16 @@ module.exports = {
         io.emit('uploadMsg', msg)
       })
 
-      socket.on('TEST', data => {
-        console.log('TEST', data)
+      socket.on('login', memberData => {
+        console.log('login', memberData)
+        members[memberData.memberId] = memberData
+        io.emit('uploadMember', members)
+      })
+
+      socket.on('offline', memberData => {
+        console.log('offline', memberData)
+        delete members[memberData.memberId]
+        io.emit('uploadMember', members)
       })
     })
   }

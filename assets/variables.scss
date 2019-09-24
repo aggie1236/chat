@@ -5,7 +5,9 @@
 
 $blackText: #111111;
 $grayBg: #1e1e1e;
+$grayTab: #2d2d2d;
 $grayBgLight: #252526;
+$grayBgLightHover: #2c2d2d;
 $grayUi: #333333;
 
 $textGray: #888888;
@@ -14,3 +16,57 @@ $textLightGray: #bbbbbb;
 $chatInfo: #83cef0;
 $chatComment: #5a9c4c;
 $chatText: #7a7a7a;
+
+.msg_input_area {
+  border-top: 2px solid #383838;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  left: 0;
+  > div {
+    padding-left: 200px;
+  }
+  .commment {
+    color: #0eb273;
+    padding: 0 10px;
+    font-size: 12px;
+    p {
+      margin: 0;
+      font-weight: 900;
+    }
+  }
+  .msg_input {
+    padding: 10px;
+    display: flex;
+    font-size: 12px;
+  }
+  input {
+    background-color: transparent;
+    border: 0;
+    flex: 1;
+    color: #bbbbbb;
+    border-bottom: 1px solid #383838;
+    &:focus {
+      border: 0;
+      outline: 0;
+      border-bottom: 1px solid #333333;
+    }
+  }
+}
+
+.msg_tab {
+  > div {
+    display: inline-block;
+    font-size: 8px;
+    color: #717171;
+    padding: 5px 8px;
+    cursor: pointer;
+  }
+  > div:hover {
+    color: #bbbbbb;
+  }
+  > div.active {
+    color: #bbbbbb;
+    border-bottom: 1px solid #6d6d6d;
+  }
+}

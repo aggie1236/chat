@@ -7,16 +7,10 @@ export function createRouter() {
     mode: 'history',
     routes: [
       {
-        path: '/',
-        redirect: {
-          name: 'multi_guess_AB_login'
-        }
-      },
-      {
         path: '/chat',
         name: 'chatting_room',
         component: require('~/pages/chat').default
-      }
+      },
     ]
   })
 }

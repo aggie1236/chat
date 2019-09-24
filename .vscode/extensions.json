@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "octref.vetur",
+    "teamchilla.blueprint",
+    "streetsidesoftware.code-spell-checker",
+    "mkloubert.vscode-remote-workspace",
+    "kisstkondoros.vscode-codemetrics"
+  ]
+}
