@@ -11,18 +11,21 @@ module.exports = {
       console.log('socket connection')
 
       socket.on('msg', function(msg) {
-        console.log('msg', msg)
-        messages.push(msg)
+        console.log('socketId')
         io.emit('uploadMsg', msg)
+        // io.to(socketId).emit('uploadMsg', msg)
       })
 
       socket.on('login', memberData => {
         console.log('login', memberData)
-        members[memberData.memberId] = memberData
+        const memberId = memberData.memberId
+
+        members[memberId] = memberData
+        members[memberId].socketId = socketId
         io.emit('uploadMember', members)
       })
 
-      socket.on('offline', memberData => {
+      socket.on('disconnect', memberData => {
         console.log('offline', memberData)
         delete members[memberData.memberId]
         io.emit('uploadMember', members)

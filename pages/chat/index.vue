@@ -92,16 +92,24 @@
         return new Date().getTime() + ''
       },
       keyHandler() {
-        this.$socket.emit('msg', {
-          name: 'ohiYo',
-          text: this.msg,
-          codeClass: 'codeClassHtml',
-          key: this.newKey()
-        })
+        const msg = {
+          msg: {
+            name: 'ohiYo',
+            text: this.msg,
+            codeClass: 'codeClassHtml',
+            key: this.newKey()
+          },
+          channel: {
+            id: this.channels.now.channelId
+          },
+          memberId: this.loginData.memberId
+        }
+        this.$socket.emit('msg', msg)
         this.msg = ''
       },
       uploadMsg(msg) {
-        this.allMsg.push(msg)
+        console.log('uploadMsg', msg)
+        this.SET_NEW_MSG(msg)
       },
       offline() {
         this.$socket.emit('offline', {
@@ -109,18 +117,19 @@
         })
       },
       changeChat(channel) {
+        console.log('uploadMsg')
         this.SET_NOW_CHANNE(channel)
       },
       ...mapMutations({
         SET_CHANNEL: 'SET_CHANNEL',
-        SET_NOW_CHANNE: 'SET_NOW_CHANNE'
+        SET_NOW_CHANNE: 'SET_NOW_CHANNE',
+        SET_NEW_MSG: 'SET_NEW_MSG'
       })
     },
     mounted() {
-      this.$socket.on('uploadMsg', this.uploadMsg)
       if (!this.channels.list.length) {
-        this.SET_CHANNEL({
-          channelId: this.newKey(),
+        const newChannel = {
+          channelId: 'aaa',
           name: 'undefined',
           msg: [
             {
@@ -136,8 +145,12 @@
               key: this.newKey()
             }
           ]
-        })
+        }
+        this.SET_CHANNEL(newChannel)
+        this.changeChat(newChannel)
       }
+      console.log(`uploadMsg${this.loginData.memberId}`)
+      this.$socket.on('uploadMsg', this.uploadMsg)
     },
     beforeDestroy() {
       console.log('beforeDestroy')

@@ -57,7 +57,8 @@
     },
     computed: {
       ...mapState({
-        channels: state => state.channels
+        channels: state => state.channels,
+        loginData: state => state.loginData
       })
     },
     methods: {
@@ -72,6 +73,7 @@
         this.SET_CHANNEL({
           channelId: this.newKey(),
           name: 'undefined',
+          members: [this.loginData.memberId],
           msg: [
             {
               name: 'ddddd',

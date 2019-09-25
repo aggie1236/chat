@@ -1,5 +1,5 @@
 <template>
-  <ul v-if="channels.list.length">
+  <ul>
     <li
       v-for="channel in channels.list"
       :key="channel.channelId"
@@ -22,6 +22,9 @@
       return {}
     },
     computed: {
+      list() {
+        return Object.values(this.channels.list)
+      },
       ...mapState({
         channels: state => state.channels
       })
