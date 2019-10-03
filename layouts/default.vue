@@ -21,6 +21,7 @@
             <li
               v-for="m in members"
               :key="m.memberId"
+              @click="inviteMember(m)"
             >{{m.memberName}}</li>
           </ul>
         </div>
@@ -69,11 +70,22 @@
       newKey() {
         return new Date().getTime() + ''
       },
+      inviteMember(m) {
+        this.INVITE_MEMBER({
+          channel: this.channels.now,
+          member: m
+        })
+        const sendData = {
+          channel: this.channels.now,
+          member: m
+        }
+        this.$socket.emit('inviteMember', sendData)
+      },
       addChat() {
-        this.SET_CHANNEL({
+        let newChannel = {
           channelId: this.newKey(),
           name: 'undefined',
-          members: [this.loginData.memberId],
+          members: [this.loginData],
           msg: [
             {
               name: 'ddddd',
@@ -82,14 +94,22 @@
               key: this.newKey()
             }
           ]
-        })
+        }
+        this.SET_CHANNEL(newChannel)
+        // this.$socket.emit('newChannel', newChannel)
+      },
+      joinChannel(channel) {
+        // console.log('joinChannel')
+        this.SET_CHANNEL(channel)
       },
       ...mapMutations({
-        SET_CHANNEL: 'SET_CHANNEL'
+        SET_CHANNEL: 'SET_CHANNEL',
+        INVITE_MEMBER: 'INVITE_MEMBER'
       })
     },
     mounted() {
       this.$socket.on('uploadMember', this.uploadMember)
+      this.$socket.on('joinChannel', this.joinChannel)
     },
     beforeDestroy() {
       this.$socket.off('uploadMember')
@@ -105,7 +125,7 @@
     color: #bbbbbb;
     font-size: 14px;
     margin: 0;
-    font-family: Microsoft JhengHei;
+    font-family: 'Microsoft JhengHei';
   }
   .sidebar {
     position: fixed;

@@ -23,13 +23,13 @@ $chatText: #7a7a7a;
   bottom: 0;
   width: 100%;
   left: 0;
+  font-size: 12px;
   > div {
     padding-left: 200px;
   }
   .commment {
     color: #0eb273;
     padding: 0 10px;
-    font-size: 12px;
     p {
       margin: 0;
       font-weight: 900;
@@ -37,13 +37,10 @@ $chatText: #7a7a7a;
   }
   .msg_input {
     padding: 10px;
-    display: flex;
-    font-size: 12px;
   }
   input {
     background-color: transparent;
     border: 0;
-    flex: 1;
     color: #bbbbbb;
     border-bottom: 1px solid #383838;
     &:focus {

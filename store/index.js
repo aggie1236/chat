@@ -34,14 +34,19 @@ export const mutations = {
   },
   SET_NEW_MSG: (state, data) => {
     console.log('SET_NEW_MSG', data)
-
     // if (!state.channels.list[data.channelId]) return false
-    state.channels.list[data.channel.id].msg.push(data.msg)
+    state.channels.list[data.channel.channelId].msg.push(data.msg)
+  },
+  INVITE_MEMBER: (state, data) => {
+    console.log('INVITE_MEMBER', data)
+
+    state.channels.list[data.channel.channelId].members.push(data.member)
+    state.channels.now = data.channel
   }
 }
 export const actions = {
   SET_LOGIN_DATA({ commit }, data) {
-    console.log('actions', data)
+    console.log('SET_LOGIN_DATA')
     commit('SET_LOGIN', data)
   }
 }

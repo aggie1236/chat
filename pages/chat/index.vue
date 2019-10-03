@@ -100,9 +100,10 @@
             key: this.newKey()
           },
           channel: {
-            id: this.channels.now.channelId
+            channelId: this.channels.now.channelId,
+            members: this.channels.now.members
           },
-          memberId: this.loginData.memberId
+          memberId: this.loginData
         }
         this.$socket.emit('msg', msg)
         this.msg = ''
@@ -129,7 +130,7 @@
     mounted() {
       if (!this.channels.list.length) {
         const newChannel = {
-          channelId: 'aaa',
+          channelId: 'all',
           name: 'undefined',
           msg: [
             {
