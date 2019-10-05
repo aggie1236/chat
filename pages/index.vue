@@ -51,13 +51,13 @@
           memberName: this.memberName,
           memberId: this.createKey()
         }
-        this.$socket.emit('login', memberData)
-        this.$socket.on('loginSuccess', this.loginSuccess)
+        this.$socket.emit('login', memberData, () => {
+          this.loginSuccess(memberData)
+        })
       },
       loginSuccess(memberData) {
-        this.$socket.off('loginSuccess')
+        console.log('loginSuccess')
         this.SET_LOGIN(memberData)
-        // this.$store.dispatch('SET_LOGIN_DATA', memberData)
         this.memberName = ''
         this.$router.push('chat')
       },

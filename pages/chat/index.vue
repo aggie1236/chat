@@ -11,9 +11,9 @@
         >
           <component
             :is="chat.codeClass"
+            :text="chat.text"
             :name="chat.name"
-          >{{chat.text}}
-          </component>
+          />
         </div>
       </div>
 
@@ -77,6 +77,12 @@
             text: 'shishishishi',
             codeClass: 'codeClassFunc',
             key: this.newKey()
+          },
+          {
+            name: 'blblblblbl',
+            text: '我的老天鵝',
+            codeClass: 'codeClassRegExp',
+            key: this.newKey()
           }
         ]
       }
@@ -92,11 +98,12 @@
         return new Date().getTime() + ''
       },
       keyHandler() {
+        if (!this.msg) return false
         const msg = {
           msg: {
-            name: 'ohiYo',
+            name: this.loginData.memberName,
             text: this.msg,
-            codeClass: 'codeClassHtml',
+            codeClass: 'codeClassFunc',
             key: this.newKey()
           },
           channel: {
@@ -148,7 +155,7 @@
           ]
         }
         this.SET_CHANNEL(newChannel)
-        this.changeChat(newChannel)
+        // this.changeChat(newChannel)
       }
       console.log(`uploadMsg${this.loginData.memberId}`)
       this.$socket.on('uploadMsg', this.uploadMsg)

@@ -1,33 +1,36 @@
 <template>
   <div class="cp_code_class_html">
-    <span><{{name}}></span>
-      <slot></slot>
-    <span></{{name}}></span>
-    </div>
+    <span class="text-blue">
+      <{{ name }}
+        </span>
+        <span
+        class="text-lightblue"
+      >class
+    </span>
+    =
+    <span class="text-orange">"text-center bg-yellow"</span>
+    >
+    {{text}}
+    <span class="text-blue"></{{ name }}></span>
+  </div>
 </template>
 
 <script>
   export default {
     name: 'codeClassHtml',
-    components: {},
-    props:{
-      name:{
+    props: {
+      name: {
         type: String,
         default: 'div'
+      },
+      text: {
+        type: String,
+        default: ''
       }
-    },
-    data(){
-      return {
-      }
-    },
-    methods: {},
-    mounted() {}
-  };
+    }
+  }
 </script>
 <style lang="scss" scoped>
-.cp_code_class_html{
-  span{
-    color: #3D8FC6;
+  .cp_code_class_html {
   }
-}
 </style>

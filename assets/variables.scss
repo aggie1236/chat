@@ -14,8 +14,48 @@ $textGray: #888888;
 $textLightGray: #bbbbbb;
 
 $chatInfo: #83cef0;
+$blue: #3d95cf;
 $chatComment: #5a9c4c;
 $chatText: #7a7a7a;
+$orange: #d58c71;
+$yellow: #dbdda4;
+$pink: #ca7dbd;
+
+.text-indent {
+  &_1 {
+    text-indent: 2em;
+  }
+  &_2 {
+    text-indent: 3em;
+  }
+  &_3 {
+    text-indent: 4em;
+  }
+}
+.font-sm {
+  font-size: 10px;
+}
+.text-orange {
+  color: $orange;
+}
+.text-yellow {
+  color: $yellow;
+}
+.text-pink {
+  color: $pink;
+}
+.text-green {
+  color: $chatComment;
+}
+.text-blue {
+  color: $blue;
+}
+.text-lightblue {
+  color: $chatInfo;
+}
+.text-gray {
+  color: $chatText;
+}
 
 .msg_input_area {
   border-top: 2px solid #383838;

@@ -10,20 +10,6 @@
         <span>(){</span>
       </div>
       <div class="text-indent_2">
-        <p>
-          <span class="text-pink">if </span>(
-          <span class="text-lightblue">{{ 'arr.length ' }}</span>
-          {{'< 2)'}}
-          <span class="text-pink">return </span>arr
-        </p>
-        <div class="">
-          <span class="text-lightblue">arr</span>.
-          <span class="text-yellow">forEach</span>( c => {
-        </div>
-        <!-- <div class="text-indent_3 text-green font-sm">
-          //
-          
-        </div> -->
         <div class="text-indent_3">
           <span class="text-lightblue">arr</span>.
           <span class="text-yellow">push</span>(
@@ -51,10 +37,6 @@
       name: {
         type: String,
         default: 'div'
-      },
-      text: {
-        type: String,
-        default: ''
       }
     },
     data() {
@@ -66,8 +48,5 @@
 </script>
 <style lang="scss" scoped>
   .cp_code_class_func {
-    .cont {
-      text-indent: 2em;
-    }
   }
 </style>

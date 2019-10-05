@@ -24,23 +24,25 @@ module.exports = {
         }
       })
 
-      socket.on('login', memberData => {
+      socket.on('login', (memberData, fn) => {
         console.log('login', memberData)
         const memberId = memberData.memberId
 
         members[memberId] = memberData
         members[memberId].socketId = socketId
-        io.to(socketId).emit('loginSuccess', memberData)
+        // io.to(socketId).emit('loginSuccess', memberData)
+        fn()
         io.emit('uploadMember', members)
       })
 
-      // socket.on('newChannel', data => {
-      //   // 新增聊天室
-      //   console.log('newChannel', data)
-      //   socket.join(data.channelId, () => {
-      //     console.log(socket.rooms)
-      //   })
-      // })
+      socket.on('newChannel', (data, callback) => {
+        // 新增聊天室
+        socket.join(data.channelId, () => {
+          console.log('newChannel', data)
+          console.log('rooms', socket.rooms)
+          callback()
+        })
+      })
 
       socket.on('inviteMember', data => {
         // 邀請某人加入聊天室

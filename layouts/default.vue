@@ -95,8 +95,9 @@
             }
           ]
         }
-        this.SET_CHANNEL(newChannel)
-        // this.$socket.emit('newChannel', newChannel)
+        this.$socket.emit('newChannel', newChannel, () => {
+          this.SET_CHANNEL(newChannel)
+        })
       },
       joinChannel(channel) {
         // console.log('joinChannel')
