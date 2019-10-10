@@ -28,7 +28,7 @@
           <span class="text-lightblue">arr</span>.
           <span class="text-yellow">push</span>(
           <span class="text-orange">'
-            <slot />'</span>)
+            {{ text }}'</span>)
         </div>
         <div>})</div>
       </div>
@@ -61,7 +61,10 @@
       return {}
     },
     methods: {},
-    mounted() {}
+    mounted() {
+      console.log('mounted')
+      this.$emit('scrollBottom')
+    }
   }
 </script>
 <style lang="scss" scoped>

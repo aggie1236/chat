@@ -38,6 +38,7 @@
     <div
       class="main"
       id="main"
+      ref="main"
     >
       <nuxt />
     </div>
@@ -69,6 +70,13 @@
       },
       newKey() {
         return new Date().getTime() + ''
+      },
+      scrollBottom() {
+        console.log('aaa')
+        console.log(this.$refs.main.scrollHeight)
+        let dom = this.$refs.main
+        dom.scrollTop = dom.scrollHeight - dom.clientHeight
+        console.log(dom.scrollTop)
       },
       inviteMember(m) {
         this.INVITE_MEMBER({
@@ -164,9 +172,9 @@
     }
   }
 
-  .main {
-    padding-left: 200px;
-    height: calc(100vh - 70px);
-    overflow-y: auto;
-  }
+  // .main {
+  //   padding-left: 200px;
+  //   height: calc(100vh - 70px);
+  //   overflow-y: auto;
+  // }
 </style>

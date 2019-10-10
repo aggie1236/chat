@@ -1,9 +1,15 @@
 <template>
-  <div>
+  <div
+    class="chat_main"
+    ref="chat_main"
+  >
     <div class="channel_tab">
       <channels />
     </div>
-    <div class="chat_content">
+    <div
+      class="chat_content"
+      ref="chat_content"
+    >
       <div v-if="channels.now">
         <div
           v-for="chat in channels.now.msg"
@@ -13,6 +19,7 @@
             :is="chat.codeClass"
             :text="chat.text"
             :name="chat.name"
+            @scrollBottom="scrollBottom"
           />
         </div>
       </div>
@@ -28,12 +35,18 @@
           </div>
           <div class="active">TERMINAL</div>
         </div>
-
+        <div
+          class="commment"
+          v-if="otherStatus"
+        >
+          <p>{{ guildText }}</p>
+        </div>
         <div class="msg_input">
           user:project $
           <input
             type="text"
             v-model="msg"
+            ref="textInput"
             @keyup.enter="keyHandler"
           />
         </div>
@@ -54,7 +67,6 @@
       codeClassFunc,
       channels
     },
-    layout: 'error',
     asyncData({ store, redirect, route }) {
       console.log(store.state.loginData)
       if (!store.state.loginData.memberId) {
@@ -64,7 +76,14 @@
     data() {
       return {
         msg: '',
+        codeClass: 'codeClassFunc',
         isInput: false,
+        otherStatus: false,
+        guildText: '',
+        codeClassMap: {
+          html: 'codeClassHtml',
+          func: 'codeClassFunc'
+        },
         allMsg: [
           {
             name: 'ohiYo',
@@ -97,27 +116,62 @@
       newKey() {
         return new Date().getTime() + ''
       },
+      commandMatch(str) {
+        console.log('commandMatch')
+        let re = /^npm\s/
+        return re.test(str)
+      },
+      commandList(str) {
+        console.log('commandList')
+        if (/change\sstyle/.test(str)) {
+          this.guildText = `input new msg style(html,func)`
+          this.otherStatus = true
+          this.msg = ''
+        }
+      },
       keyHandler() {
         if (!this.msg) return false
-        const msg = {
-          msg: {
-            name: this.loginData.memberName,
-            text: this.msg,
-            codeClass: 'codeClassFunc',
-            key: this.newKey()
-          },
-          channel: {
-            channelId: this.channels.now.channelId,
-            members: this.channels.now.members
-          },
-          memberId: this.loginData
+
+        if (this.otherStatus) {
+          if (this.codeClassMap.hasOwnProperty(this.msg.trim())) {
+            this.codeClass = this.codeClassMap[this.msg]
+          }
+          this.msg = ''
+          this.otherStatus = false
+        } else {
+          if (this.commandMatch(this.msg)) {
+            this.commandList(this.msg)
+          } else {
+            const msg = {
+              msg: {
+                name: this.loginData.memberName,
+                text: this.msg,
+                codeClass: this.codeClass,
+                key: this.newKey()
+              },
+              channel: {
+                channelId: this.channels.now.channelId,
+                members: this.channels.now.members
+              },
+              memberId: this.loginData
+            }
+            this.$socket.emit('msg', msg, this.scrollBottom)
+            this.msg = ''
+          }
         }
-        this.$socket.emit('msg', msg)
-        this.msg = ''
+      },
+      scrollBottom() {
+        // console.log(this.$refs)
+        console.log('aaa')
+        console.log(this.$refs)
+        let dom = this.$refs.chat_main
+        dom.scrollTop = dom.scrollHeight - dom.clientHeight
+        console.log(dom.scrollTop, dom.scrollHeight, dom.clientHeight)
       },
       uploadMsg(msg) {
         console.log('uploadMsg', msg)
         this.SET_NEW_MSG(msg)
+        // setTimeout(this.scrollBottom, 100)
       },
       offline() {
         this.$socket.emit('offline', {
@@ -135,6 +189,8 @@
       })
     },
     mounted() {
+      this.$refs.textInput.focus()
+
       if (!this.channels.list.length) {
         const newChannel = {
           channelId: 'all',
@@ -157,6 +213,7 @@
         this.SET_CHANNEL(newChannel)
         // this.changeChat(newChannel)
       }
+
       console.log(`uploadMsg${this.loginData.memberId}`)
       this.$socket.on('uploadMsg', this.uploadMsg)
     },
@@ -172,6 +229,11 @@
 </script>
 <style lang="scss" scoped>
   @import 'assets/variables.scss';
+  .chat_main {
+    padding-left: 200px;
+    height: calc(100vh - 70px);
+    overflow-y: auto;
+  }
   .channel_tab {
     background-color: $grayBgLight;
     ul {
