@@ -78,16 +78,14 @@
         dom.scrollTop = dom.scrollHeight - dom.clientHeight
         console.log(dom.scrollTop)
       },
-      inviteMember(m) {
-        this.INVITE_MEMBER({
-          channel: this.channels.now,
-          member: m
-        })
+      inviteMember(member) {
         const sendData = {
           channel: this.channels.now,
-          member: m
+          member: member
         }
-        this.$socket.emit('inviteMember', sendData)
+        this.$socket.emit('inviteMember', sendData, () => {
+          this.INVITE_MEMBER(sendData)
+        })
       },
       addChat() {
         let newChannel = {
@@ -109,10 +107,14 @@
       },
       joinChannel(channel) {
         // console.log('joinChannel')
-        this.SET_CHANNEL(channel)
+        this.$socket.emit('acceptJoin', channel, () => {
+          this.SET_CHANNEL(channel)
+          this.SET_NOW_CHANNE(channel)
+        })
       },
       ...mapMutations({
         SET_CHANNEL: 'SET_CHANNEL',
+        SET_NOW_CHANNE: 'SET_NOW_CHANNE',
         INVITE_MEMBER: 'INVITE_MEMBER'
       })
     },

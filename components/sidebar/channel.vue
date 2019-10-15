@@ -14,7 +14,6 @@
 </template>
 
 <script>
-  import channels from '~/components/sidebar/channel'
   import { mapState, mapMutations } from 'vuex'
   export default {
     name: 'channel',

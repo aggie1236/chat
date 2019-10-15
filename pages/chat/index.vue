@@ -30,8 +30,12 @@
         <div class="msg_tab">
           <div>PROBLEMS</div>
           <div>OUTPUT</div>
-          <div>
-            <nuxt-link :to="{path: '/'}">DEBUG CONSOLE</nuxt-link>
+          <div @click="openFace">
+            DEBUG CONSOLE
+            <face
+              v-if="isFace"
+              @chooseFace="chooseFace"
+            />
           </div>
           <div class="active">TERMINAL</div>
         </div>
@@ -59,16 +63,17 @@
 <script>
   import codeClassHtml from '~/components/codeClassHtml'
   import codeClassFunc from '~/components/codeClassFunc'
+  import face from '~/components/face'
   import channels from '~/components/sidebar/channel'
   import { mapState, mapMutations } from 'vuex'
   export default {
     components: {
       codeClassHtml,
       codeClassFunc,
-      channels
+      channels,
+      face
     },
-    asyncData({ store, redirect, route }) {
-      console.log(store.state.loginData)
+    fetch({ store, redirect, route }) {
       if (!store.state.loginData.memberId) {
         redirect('/')
       }
@@ -80,6 +85,7 @@
         isInput: false,
         otherStatus: false,
         guildText: '',
+        isFace: false,
         codeClassMap: {
           html: 'codeClassHtml',
           func: 'codeClassFunc'
@@ -182,6 +188,13 @@
         console.log('uploadMsg')
         this.SET_NOW_CHANNE(channel)
       },
+      openFace() {
+        this.isFace = !this.isFace
+      },
+      chooseFace(face) {
+        console.log(face)
+        this.msg = this.msg + face
+      },
       ...mapMutations({
         SET_CHANNEL: 'SET_CHANNEL',
         SET_NOW_CHANNE: 'SET_NOW_CHANNE',
@@ -243,6 +256,7 @@
     li {
       background-color: $grayTab;
       padding: 4px 12px;
+      position: relative;
       cursor: pointer;
       &.active {
         background-color: $grayBg;

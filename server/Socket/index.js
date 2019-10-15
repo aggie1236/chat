@@ -1,74 +1,63 @@
-const SocketIO = require('socket.io')
-let io = null
+const SocketIO = require("socket.io");
+let io = null;
 module.exports = {
   init(server) {
-    io = SocketIO(server)
-    const messages = []
-    const members = {}
-    io.on('connection', async function(socket) {
-      const socketId = socket.id
+    io = SocketIO(server);
+    const messages = [];
+    const members = {};
+    io.on("connection", async function(socket) {
+      const socketId = socket.id;
+      console.log("socket connection");
 
-      console.log('socket connection')
-
-      socket.on('msg', function(msg) {
-        console.log('socketId')
-        if (msg.channel.channelId === 'all') {
-          console.log('allMag')
-          io.emit('uploadMsg', msg)
+      socket.on("msg", function(msg) {
+        if (msg.channel.channelId === "all") {
+          io.emit("uploadMsg", msg);
         } else {
-          console.log('channelMsg', msg)
-          msg.channel.members.forEach(m => {
-            console.log('members', members)
-            io.to(members[m.memberId].socketId).emit('uploadMsg', msg)
-          })
+          io.in(msg.channel.channelId).emit("uploadMsg", msg);
         }
-      })
+      });
 
-      socket.on('login', (memberData, fn) => {
-        console.log('login', memberData)
-        const memberId = memberData.memberId
+      socket.on("login", (memberData, fn) => {
+        const memberId = memberData.memberId;
 
-        members[memberId] = memberData
-        members[memberId].socketId = socketId
-        // io.to(socketId).emit('loginSuccess', memberData)
-        fn()
-        io.emit('uploadMember', members)
-      })
+        members[socketId] = memberData;
+        members[socketId].socketId = socketId;
+        fn();
+        io.emit("uploadMember", members);
+      });
 
-      socket.on('newChannel', (data, callback) => {
+      socket.on("newChannel", (data, callback) => {
         // 新增聊天室
         socket.join(data.channelId, () => {
-          console.log('newChannel', data)
-          console.log('rooms', socket.rooms)
-          callback()
-        })
-      })
+          let rooms = Object.keys(socket.rooms);
+          callback();
+        });
+      });
 
-      socket.on('inviteMember', data => {
+      socket.on("inviteMember", (data, callback) => {
         // 邀請某人加入聊天室
-        console.log('inviteMember', data)
-        io.to(data.member.socketId).emit('joinChannel', data.channel)
-      })
+        console.log("inviteMember");
+        io.to(data.member.socketId).emit("joinChannel", data.channel);
+        callback();
+      });
 
-      // socket.on('acceptJoin', channel => {
-      //   // 接受聊天室邀請
-      //   console.log('acceptJoin', channel)
-      //   socket.join(channel.channelId, () => {
-      //     let rooms = Object.keys(socket.rooms)
-      //     console.log(rooms)
-      //     io.to(channel.channelId).emit('comming')
-      //   })
-      // })
+      socket.on("acceptJoin", (channel, callback) => {
+        // 接受聊天室邀請
+        console.log("acceptJoin", channel);
+        socket.join(channel.channelId, () => {
+          callback();
+          io.to(channel.channelId).emit("comming");
+        });
+      });
 
-      socket.on('disconnect', memberData => {
-        console.log('offline', memberData)
-        delete members[memberData.memberId]
-        io.emit('uploadMember', members)
-      })
-      socket.on('error', error => {
-        console.log(error)
-        io.emit('error', error)
-      })
-    })
+      socket.on("disconnect", () => {
+        delete members[socketId];
+        io.emit("uploadMember", members);
+      });
+      socket.on("error", error => {
+        console.log(error);
+        io.emit("error", error);
+      });
+    });
   }
-}
+};
